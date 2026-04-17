@@ -1,4 +1,4 @@
-# NeetCode Solutions — @preeti13456
+# DSA Solutions
 
 > Synced automatically from [NeetCode.io](https://neetcode.io) · Repository: `neetcode-submissions-r6yutbjf`
 
