@@ -1,0 +1,74 @@
+Question : You are given several boxes with different colors represented by different positive numbers.
+
+You may experience several rounds to remove boxes until there is no box left. Each time you can choose some continuous boxes with the same color (i.e., composed of k boxes, k >= 1), remove them and get k * k points.
+
+Return the maximum points you can get.
+
+ 
+
+Example 1:
+
+Input: boxes = [1,3,2,2,2,3,4,3,1]
+Output: 23
+Explanation:
+[1, 3, 2, 2, 2, 3, 4, 3, 1] 
+----> [1, 3, 3, 4, 3, 1] (3*3=9 points) 
+----> [1, 3, 3, 3, 1] (1*1=1 points) 
+----> [1, 1] (3*3=9 points) 
+----> [] (2*2=4 points)
+Example 2:
+
+Input: boxes = [1,1,1]
+Output: 9
+Example 3:
+
+Input: boxes = [1]
+Output: 1
+ 
+
+Constraints:
+
+1 <= boxes.length <= 100
+1 <= boxes[i] <= 100
+
+
+Answer:
+
+class Solution {
+public:
+int memo[200][200][200] = {};
+    int removeBoxes(vector<int>& boxes) {
+        return dp(boxes, 0, boxes.size()-1, 0);
+    }
+    int dp(vector<int>&boxes, int l, int r, int k)
+    {
+        //edge cases
+        if(l>r) return 0;
+        if(memo[l][r][k]>0) return memo[l][r][k];
+
+        int l1 = l;
+        int count = k;
+        //consecutive boxs same color increase l and score
+        while(l+1<=r && boxes[l]==boxes[l+1])
+        {
+            l++;
+            k++;
+        }
+        //remove all boxes which has same boxes[l];
+        int ans = (k+1)*(k+1)+dp(boxes, l+1, r, 0);
+
+        //merge non-contigous block of same color together
+        for(int mid=l+1; mid<=r; mid++)
+        
+            if(boxes[mid]==boxes[l])
+            ans=max(ans, dp(boxes, mid, r, k+1)+dp(boxes, l+1, mid-1, 0));
+            return memo[l1][r][count] = ans;
+        
+
+    }
+};
+
+
+Time: O(N^4), where N <= 100 is length of boxes array.
+Explain: There is total N^3 dp states, they are dp[0][0][0], dp[0][0][1],..., dp[n][n][n], each state needs a loop O(N) to compute the result. So total complexity is O(N^4).
+Space: O(N^3)
