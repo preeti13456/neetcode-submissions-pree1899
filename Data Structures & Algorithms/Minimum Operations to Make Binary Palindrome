@@ -1,0 +1,63 @@
+You are given an integer array nums.
+
+For each element nums[i], you may perform the following operations any number of times (including zero):
+
+Increase nums[i] by 1, or
+Decrease nums[i] by 1.
+A number is called a binary palindrome if its binary representation without leading zeros reads the same forward and backward.
+
+Your task is to return an integer array ans, where ans[i] represents the minimum number of operations required to convert nums[i] into a binary palindrome.
+
+ 
+
+
+class Solution {
+public:
+bool check(int n)
+{
+    string s = "";
+    while(n>0)
+    {
+        //convert into binary palindrom
+        s+=(n&1);
+        n=n>>1;
+
+    }
+    int i=0;
+    int j = s.size()-1;
+    while(i<j)
+    {
+    if(s[i]!=s[j])
+    {
+        return false;
+    } 
+    i++;
+    j--;
+}
+return true;
+}
+    vector<int> minOperations(vector<int>& nums) {
+        //binary palindromic array
+        vector<int>pl;
+        for(int i=1; i<=6000; i++)
+        {
+            //if the number is a binary palindrome will push the 
+            if(check(i))
+            {
+            pl.push_back(i);
+            }
+        }
+        vector<int>ans;
+        for(int i : nums)
+        {
+            int mini = 1e9;
+            for(int j : pl)
+            {
+                    mini = min(mini, abs(j-i));
+            }
+            ans.push_back(mini);
+        }
+        return ans;
+
+    }
+};
